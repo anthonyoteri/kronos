@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@ant-design/dark-theme": "^1.0.3",
+    "connected-react-router": "^6.5.2",
+    "react-redux": "^7.1.1",
+    "react-router-dom": "^5.1.2",
+    "redux": "^4.0.4"
+  }
+}
