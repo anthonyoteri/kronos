@@ -5,7 +5,7 @@ from .models import Project, Record
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Project
-        fields = ('slug', 'name', 'url', 'description', 'created', 'updated')
+        fields = ('slug', 'name', 'url', 'description', 'locked', 'last_used', 'created', 'updated')
         extra_kwargs = {"url": {"lookup_field": "slug"}}
 
 
@@ -16,4 +16,4 @@ class RecordSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url', "project", "start_time", "stop_time", "duration")
 
     
-    project = serializers.HyperlinkedRelatedField(lookup_field="slug", view_name="project-detail", queryset=Project.objects.all())
+    project = serializers.SlugRelatedField(slug_field="slug", queryset=Project.objects.all())

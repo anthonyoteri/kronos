@@ -6,9 +6,17 @@ class Project(models.Model):
     slug = models.SlugField(max_length=100, unique=True)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=255, blank=True)
+    locked = models.BooleanField(default=False)
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    @property
+    def last_used(self):
+        r = [r.start_time for r in self.record_set.all()]
+        if not r:
+            return None
+        return max(r)
 
     class Meta:
         ordering = ['created']

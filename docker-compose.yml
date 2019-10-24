@@ -1,0 +1,26 @@
+version: "3"
+services:
+  backend:
+    build: ./kronos-api
+    image: kronos-api:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - static-content:/app/static
+      - config:/config
+
+  web:
+    build: ./kronos-ui
+    image: kronos-ui:latest
+    ports:
+      - "80:80"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - backend
+    volumes:
+      - static-content:/usr/share/nginx/html/static
+
+volumes:
+  static-content:
+  config:
