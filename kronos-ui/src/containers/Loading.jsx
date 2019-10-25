@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 
 import { Layout, Icon } from "antd";
 
@@ -9,9 +9,9 @@ const Loading = () => {
         <div
           style={{
             display: "flex",
-            "flex-direction": "column",
-            "justify-content": "center",
-            "align-items": "center",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
             width: "100%",
             height: "100vh"
           }}
