@@ -1,10 +1,34 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-class Log extends Component {
-  state = {};
-  render() {
-    return <h1>Log</h1>;
-  }
-}
+import { Card, Col, Row, Timeline } from 'antd';
 
-export default Log;
+import moment from 'moment';
+
+const Log = ({ records, projects }) => {
+    return (
+        <Card>
+            <Row>
+                <Col style={{ paddingBottom: 8 }} span={24}>
+                    <Timeline>
+                        {records.list.slice(0, 10).map(r => (
+                            <Timeline.Item key={r.id} color={r.stopTime !== null ? 'blue' : 'green'}>
+                                <p>{projects.list.find(p => p.slug == r.project).name}</p>
+                                <p>
+                                    {moment(r.startTime).calendar()} for {moment.duration(r.duration * 1000).humanize()}
+                                </p>
+                            </Timeline.Item>
+                        ))}
+                    </Timeline>
+                </Col>
+            </Row>
+        </Card>
+    );
+};
+
+const mapStateToProps = state => ({
+    records: state.records,
+    projects: state.projects,
+});
+
+export default connect(mapStateToProps)(Log);
