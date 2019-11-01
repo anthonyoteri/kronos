@@ -1,4 +1,4 @@
-FROM alpine:3.9
+FROM alpine:3.10
 
 ENV PYTHONUNBUFFERED=1
 ENV PIP_NO_CACHE_DIR=0
@@ -17,22 +17,8 @@ RUN apk add --no-cache \
     sqlite \
     --
 
-RUN python3 -m ensurepip \
-    && rm -r /usr/lib/python*/ensurepip \
-    && pip3 install --no-cache --upgrade \
-        pip \
-        setuptools \
-        wheel \
-    && if [ ! -e /usr/bin/pip ]; \
-        then ln -s pip3 /usr/bin/pip; \
-    fi
-
-RUN pip install -U pipenv
-
-COPY Pipfile .
-COPY Pipfile.lock .
-
-RUN pipenv install --system
+COPY requirements.txt .
+RUN pip3 install -r requirements.txt
 
 COPY backend ./backend
 COPY kronos ./kronos
