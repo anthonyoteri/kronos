@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import { Card, Col, Row, Timeline } from 'antd';
@@ -13,7 +13,7 @@ const Log = ({ records, projects }) => {
                     <Timeline>
                         {records.list.slice(0, 10).map(r => (
                             <Timeline.Item key={r.id} color={r.stopTime !== null ? 'blue' : 'green'}>
-                                <p>{projects.list.find(p => p.slug == r.project).name}</p>
+                                <p>{projects.list.find(p => p.slug === r.project).name}</p>
                                 <p>
                                     {moment(r.startTime).calendar()} for {moment.duration(r.duration * 1000).humanize()}
                                 </p>

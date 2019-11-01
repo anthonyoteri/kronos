@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 
-import slugify from 'slugify';
-
-import { Checkbox, Col, DatePicker, Form, Icon, Input, Modal, Row, Select } from 'antd';
+import { Col, DatePicker, Form, Modal, Row, Select } from 'antd';
 import moment from 'moment';
 
 class RecordForm extends Component {
