@@ -1,5 +1,6 @@
 import { FETCH_RECORDS_READY, FETCH_RECORDS_FAIL } from './types';
 import api from './api';
+import moment from 'moment';
 
 export const fetchRecords = () => async dispatch => {
     try {
@@ -13,7 +14,12 @@ export const fetchRecords = () => async dispatch => {
 export const fetchRecordsReady = records => {
     return {
         type: FETCH_RECORDS_READY,
-        records,
+        records: records.map(r => ({
+            ...r,
+            startTime: moment(r.startTime),
+            stopTime: r.stopTime ? moment(r.stopTime) : null,
+            duration: parseFloat(r.duration),
+        })),
     };
 };
 

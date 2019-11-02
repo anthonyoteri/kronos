@@ -47,15 +47,15 @@ class Projects extends Component {
                             }}
                             type="primary"
                             icon="plus"
-                            disabled={projects.list.filter(p => !p.locked).length === 0}
+                            disabled={projects.filter(p => !p.locked).length === 0}
                         />
                     </Col>
                 </Row>
                 <Row>
                     <Col span={24}>
                         <RecordTable
-                            records={records.list}
-                            projects={projects.list}
+                            records={records}
+                            projects={projects}
                             onEdit={record => {
                                 this.setState({ editDialogData: record, editDialogOpen: true });
                             }}
@@ -84,8 +84,8 @@ class Projects extends Component {
 }
 
 const mapStatesToProps = state => ({
-    records: state.records,
-    projects: state.projects,
+    records: state.records.list,
+    projects: state.projects.list,
 });
 
 export default connect(mapStatesToProps)(Projects);

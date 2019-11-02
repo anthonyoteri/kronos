@@ -53,7 +53,7 @@ class Projects extends Component {
                 <Row>
                     <Col span={24}>
                         <ProjectTable
-                            projects={projects.list}
+                            projects={projects}
                             onEdit={project => {
                                 this.setState({ editDialogData: project, editDialogOpen: true });
                             }}
@@ -80,7 +80,7 @@ class Projects extends Component {
 }
 
 const mapStatesToProps = state => ({
-    projects: state.projects,
+    projects: state.projects.list,
 });
 
 export default connect(mapStatesToProps)(Projects);

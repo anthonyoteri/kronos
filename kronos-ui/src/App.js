@@ -13,7 +13,6 @@ const Projects = React.lazy(() => import('./containers/Projects'));
 const Records = React.lazy(() => import('./containers/Records'));
 const Log = React.lazy(() => import('./containers/Log'));
 const ReportWeek = React.lazy(() => import('./containers/ReportWeek'));
-const ReportMonth = React.lazy(() => import('./containers/ReportMonth'));
 
 function App() {
     return (
@@ -35,9 +34,6 @@ function App() {
                                 </Route>
                                 <Route path="/report-week">
                                     <ReportWeek />
-                                </Route>
-                                <Route path="/report-month">
-                                    <ReportMonth />
                                 </Route>
                             </Switch>
                         </Nav>

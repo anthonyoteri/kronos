@@ -4,6 +4,11 @@ import { Button, Icon, Popconfirm, Table } from 'antd';
 import moment from 'moment';
 
 const ProjectTable = ({ projects, onEdit, onDelete }) => {
+    const calendarFormat = {
+        lastWeek: 'dddd MMM Do [at] h:mm A',
+        sameElse: 'dddd MMM Do [at] h:mm A',
+    };
+
     const columns = [
         {
             title: 'Name',
@@ -27,7 +32,8 @@ const ProjectTable = ({ projects, onEdit, onDelete }) => {
             title: 'Last Used',
             dataIndex: 'lastUsed',
             key: 'lastUsed',
-            render: (text, record) => (record.lastUsed ? moment(record.lastUsed).calendar() : 'Never'),
+            render: (text, record) =>
+                record.lastUsed ? moment(record.lastUsed).calendar(null, calendarFormat) : 'Never',
         },
         {
             key: 'actions',

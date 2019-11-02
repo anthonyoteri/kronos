@@ -4,7 +4,12 @@ import { Button, Popconfirm, Table } from 'antd';
 
 import moment from 'moment';
 
-const RecordTable = ({ records, projects, onEdit, onDelete }) => {
+const RecordTable = ({ header, records, projects, onEdit, onDelete }) => {
+    const calendarFormat = {
+        lastWeek: 'dddd MMM Do [at] h:mm A',
+        sameElse: 'dddd MMM Do [at] h:mm A',
+    };
+
     const columns = [
         {
             title: 'Project',
@@ -16,13 +21,13 @@ const RecordTable = ({ records, projects, onEdit, onDelete }) => {
             title: 'Start Time',
             dataIndex: 'startTime',
             key: 'startTime',
-            render: (text, record) => moment(record.startTime).calendar(),
+            render: (text, record) => moment(record.startTime).calendar(null, calendarFormat),
         },
         {
             title: 'Stop Time',
             dataIndex: 'stopTime',
             key: 'stopTime',
-            render: (text, record) => (record.stopTime ? moment(record.stopTime).calendar() : '--'),
+            render: (text, record) => (record.stopTime ? moment(record.stopTime).calendar(null, calendarFormat) : '--'),
         },
         {
             title: 'Duration',

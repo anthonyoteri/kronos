@@ -14,7 +14,6 @@ class RecordForm extends Component {
     state = { ...this.initialState };
 
     setProject = e => {
-        console.log('setProject ', e);
         this.setState({ project: e });
     };
 
@@ -37,7 +36,6 @@ class RecordForm extends Component {
             stopTime: stopTime ? new Date(stopTime.valueOf()).toISOString() : null,
         };
 
-        console.log('Submit ', data);
         onOk(data);
     };
 
@@ -79,7 +77,7 @@ class RecordForm extends Component {
         const { project, startTime, stopTime } = this.state;
         const timeFormat = 'YYYY-MM-DD HH:mm:ss';
 
-        const filteredProjects = [...projects.list].filter(p => !p.locked);
+        const filteredProjects = [...projects].filter(p => !p.locked);
 
         return (
             <Modal visible={visible} title={title} onCancel={onCancel} onOk={this.submit}>

@@ -61,20 +61,12 @@ class Nav extends Component {
                                 <span>Log</span>
                             </Link>
                         </Menu.Item>
-                        <Menu.ItemGroup title="Reporting">
-                            <Menu.Item key="/report-week">
-                                <Link className="nav-link" to="/report-week">
-                                    <Icon type="calendar" />
-                                    <span>Week</span>
-                                </Link>
-                            </Menu.Item>
-                            <Menu.Item key="/report-month">
-                                <Link className="nav-link" to="/report-month">
-                                    <Icon type="calendar" />
-                                    <span>Month</span>
-                                </Link>
-                            </Menu.Item>
-                        </Menu.ItemGroup>
+                        <Menu.Item key="/report-week">
+                            <Link className="nav-link" to="/report-week">
+                                <Icon type="calendar" />
+                                <span>Reporting</span>
+                            </Link>
+                        </Menu.Item>
                     </Menu>
                 </Sider>
                 <Layout>
