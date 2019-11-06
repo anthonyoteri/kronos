@@ -30,13 +30,6 @@ class Record(models.Model):
     start_time = models.DateTimeField()
     stop_time = models.DateTimeField(blank=True, null=True)
 
-    @property
-    def duration(self) -> timedelta:
-        if self.stop_time is not None:
-            return self.stop_time - self.start_time
-        else:
-            return datetime.now(timezone.utc) - self.start_time
-
     class Meta:
         ordering = ['-start_time']
 

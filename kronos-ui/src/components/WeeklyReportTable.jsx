@@ -31,9 +31,7 @@ class WeeklyReportTable extends Component {
                 ),
                 dataIndex: d.format('YYYY-MM-DD'),
                 render: (text, record) =>
-                    record[d.format('YYYY-MM-DD')]
-                        ? moment.duration(record[d.format('YYYY-MM-DD')] * 1000).humanize()
-                        : null,
+                    record[d.format('YYYY-MM-DD')] ? moment.duration(record[d.format('YYYY-MM-DD')]).humanize() : null,
             })),
             ,
         ];

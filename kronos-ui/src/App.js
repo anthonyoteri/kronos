@@ -9,6 +9,7 @@ import Nav from './containers/Nav';
 import Loader from './containers/Loader';
 import Loading from './containers/Loading';
 
+const Today = React.lazy(() => import('./containers/Today'));
 const Projects = React.lazy(() => import('./containers/Projects'));
 const Records = React.lazy(() => import('./containers/Records'));
 const Log = React.lazy(() => import('./containers/Log'));
@@ -22,7 +23,9 @@ function App() {
                     <React.Suspense fallback={<Loading />}>
                         <Nav>
                             <Switch>
-                                <Route exact path="/"></Route>
+                                <Route exact path="/">
+                                    <Today />
+                                </Route>
                                 <Route path="/projects">
                                     <Projects />
                                 </Route>

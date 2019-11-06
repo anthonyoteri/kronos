@@ -32,9 +32,11 @@ class RecordForm extends Component {
         const data = {
             id: id,
             project: project,
-            startTime: startTime ? new Date(startTime.valueOf()).toISOString() : null,
-            stopTime: stopTime ? new Date(stopTime.valueOf()).toISOString() : null,
+            startTime: startTime ? moment(startTime.valueOf()).toISOString() : null,
+            stopTime: stopTime ? moment(stopTime.valueOf()).toISOString() : null,
         };
+
+        console.log('Data is ', data);
 
         onOk(data);
     };

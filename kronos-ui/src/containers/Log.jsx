@@ -23,7 +23,7 @@ const Log = ({ records, projects }) => {
                                 <p>{projects.list.find(p => p.slug === r.project).name}</p>
                                 <p>
                                     {moment(r.startTime).calendar(null, calendarFormat)} for{' '}
-                                    {moment.duration(r.duration * 1000).humanize()}
+                                    {moment.duration(r.duration).humanize()}
                                 </p>
                             </Timeline.Item>
                         ))}
