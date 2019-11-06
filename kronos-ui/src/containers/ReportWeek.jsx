@@ -8,6 +8,7 @@ import WeeklyReportHeader from '../components/WeeklyReportHeader';
 import WeeklyReportTable from '../components/WeeklyReportTable';
 
 import { updateRecord, deleteRecord } from '../store/records/actions';
+import ActivityTimeline from '../components/ActivityTimeline';
 import RecordForm from '../components/RecordForm';
 
 class ReportWeek extends Component {
@@ -56,40 +57,40 @@ class ReportWeek extends Component {
         const filteredRecords = days.map(d => filterStartTime(records, d));
         const joinedRecords = filteredRecords.map(r => joinProject(projects, r));
         const aggregatedRecords = joinedRecords.map(r => aggregateDurations(r));
+        const flatSortedRecords = filteredRecords.flat().sort((a, b) => (a.startTime < b.startTime ? 1 : -1));
 
         return (
-            <React.Fragment>
-                <Card style={{ margin: 4 }}>
-                    <Row>
-                        <Col style={{ paddingBottom: 8 }} span={24}>
-                            <WeeklyReportHeader
-                                onPreviousWeek={this.handlePreviousWeek}
-                                onNextWeek={this.handleNextWeek}
-                                startDate={startDate}
-                                endDate={endDate}
-                            />
-                        </Col>
-                    </Row>
-                    <Row style={{ paddingBottom: 8 }}>
-                        <Col style={{ paddingBottom: 8 }} span={24}>
-                            <WeeklyReportTable days={days} data={aggregatedRecords} />
-                        </Col>
-                    </Row>
-                </Card>
-                <Card style={{ margin: 4 }}>
-                    <Row>
-                        <Col style={{ paddingBottom: 8 }} span={24}>
-                            <RecordTable
-                                records={filteredRecords.flat()}
-                                projects={projects}
-                                onEdit={record => {
-                                    this.setState({ editDialogData: record, editDialogOpen: true });
-                                }}
-                                onDelete={this.handleDeleteRecord}
-                            />
-                        </Col>
-                    </Row>
-                </Card>
+            <Card>
+                <Row>
+                    <Col style={{ paddingBottom: 8 }} span={24}>
+                        <WeeklyReportHeader
+                            onPreviousWeek={this.handlePreviousWeek}
+                            onNextWeek={this.handleNextWeek}
+                            startDate={startDate}
+                            endDate={endDate}
+                        />
+                    </Col>
+                </Row>
+                <Row style={{ paddingBottom: 64 }}>
+                    <Col style={{ paddingBottom: 8 }} span={24}>
+                        <WeeklyReportTable days={days} data={aggregatedRecords} />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col style={{ paddingBottom: 8 }} span={6}>
+                        <ActivityTimeline projects={projects} records={flatSortedRecords} />
+                    </Col>
+                    <Col style={{ paddingBottom: 8 }} span={18}>
+                        <RecordTable
+                            records={flatSortedRecords}
+                            projects={projects}
+                            onEdit={record => {
+                                this.setState({ editDialogData: record, editDialogOpen: true });
+                            }}
+                            onDelete={this.handleDeleteRecord}
+                        />
+                    </Col>
+                </Row>
                 <RecordForm
                     title="Edit Record"
                     visible={this.state.editDialogOpen}
@@ -98,7 +99,7 @@ class ReportWeek extends Component {
                     onOk={this.handleEditRecord}
                     onCancel={() => this.setState({ editDialogOpen: false })}
                 />
-            </React.Fragment>
+            </Card>
         );
     }
 }
@@ -134,10 +135,12 @@ const joinProject = (projects, records) => {
 const aggregateDurations = records => {
     return records.reduce((agg, current) => {
         const o = { ...agg };
+        const duration = moment(current.stopTime ? current.stopTime : undefined).diff(moment(current.startTime));
+
         if (o[current.project.name]) {
-            o[current.project.name] += current.duration;
+            o[current.project.name] += duration;
         } else {
-            o[current.project.name] = current.duration;
+            o[current.project.name] = duration;
         }
         return o;
     }, {});

@@ -46,8 +46,6 @@ class ProjectForm extends Component {
                     description: data.description,
                     locked: data.locked,
                 });
-            } else {
-                this.setState(this.initialState);
             }
         }
     };

@@ -33,7 +33,14 @@ const RecordTable = ({ header, records, projects, onEdit, onDelete }) => {
             title: 'Duration',
             dataIndex: 'duration',
             key: 'duration',
-            render: (text, record) => (record.duration ? moment.duration(record.duration * 1000).humanize() : '--'),
+            render: (text, record) =>
+                moment
+                    .duration(
+                        record.stopTime
+                            ? moment(record.stopTime).diff(moment(record.startTime))
+                            : moment().diff(moment(record.startTime))
+                    )
+                    .humanize(),
         },
         {
             key: 'actions',

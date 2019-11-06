@@ -18,7 +18,6 @@ export const fetchRecordsReady = records => {
             ...r,
             startTime: moment(r.startTime),
             stopTime: r.stopTime ? moment(r.stopTime) : null,
-            duration: parseFloat(r.duration),
         })),
     };
 };
