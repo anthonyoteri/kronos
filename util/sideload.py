@@ -23,6 +23,7 @@ for project in projects:
         "locked": locked == 'True',
     }
 
+    print("Project", body['name'])
     requests.post(base_url + "/api/projects/", json=body)
 
 
@@ -35,4 +36,5 @@ for record in records:
         "stop_time": stop_time.replace("+00:00", "Z") if stop_time else None,
     }
 
+    print("Record", body['project'], body['start_time'])
     requests.post(base_url + "/api/records/", json=body)
