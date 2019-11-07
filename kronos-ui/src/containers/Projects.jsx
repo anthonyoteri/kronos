@@ -46,8 +46,10 @@ class Projects extends Component {
                                 this.setState({ createDialogOpen: true });
                             }}
                             type="primary"
-                            icon="plus"
-                        />
+                            icon="form"
+                        >
+                            Create Project
+                        </Button>
                     </Col>
                 </Row>
                 <Row>

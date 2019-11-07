@@ -46,9 +46,11 @@ class Projects extends Component {
                                 this.setState({ createDialogOpen: true });
                             }}
                             type="primary"
-                            icon="plus"
+                            icon="form"
                             disabled={projects.filter(p => !p.locked).length === 0}
-                        />
+                        >
+                            Create Record
+                        </Button>
                     </Col>
                 </Row>
                 <Row>

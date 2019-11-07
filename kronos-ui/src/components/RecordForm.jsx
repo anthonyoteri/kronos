@@ -32,9 +32,11 @@ class RecordForm extends Component {
         const data = {
             id: id,
             project: project,
-            startTime: startTime ? new Date(startTime.valueOf()).toISOString() : null,
-            stopTime: stopTime ? new Date(stopTime.valueOf()).toISOString() : null,
+            startTime: startTime ? moment(startTime.valueOf()).toISOString() : null,
+            stopTime: stopTime ? moment(stopTime.valueOf()).toISOString() : null,
         };
+
+        console.log('Data is ', data);
 
         onOk(data);
     };
@@ -55,7 +57,7 @@ class RecordForm extends Component {
         return startTime.valueOf() > stopTime.valueOf();
     };
 
-    componentDidUpdate = prevProp => {
+    componentDidUpdate = (prevProp, prevState) => {
         const { data } = this.props;
 
         if (prevProp !== this.props) {
@@ -66,8 +68,6 @@ class RecordForm extends Component {
                     startTime: data.startTime ? moment(data.startTime) : null,
                     stopTime: data.stopTime ? moment(data.stopTime) : null,
                 });
-            } else {
-                this.setState(this.initialState);
             }
         }
     };
@@ -83,7 +83,7 @@ class RecordForm extends Component {
             <Modal visible={visible} title={title} onCancel={onCancel} onOk={this.submit}>
                 <Form>
                     <Form.Item label="Project">
-                        <Select onChange={this.setProject} value={project} allowClear>
+                        <Select onChange={this.setProject} value={project}>
                             {filteredProjects.map(p => (
                                 <Select.Option key={p.slug} value={p.slug}>
                                     {p.name}

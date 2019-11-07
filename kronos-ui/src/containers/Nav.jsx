@@ -5,7 +5,7 @@ import { Layout, Menu, Icon } from 'antd';
 
 import largeLogo from '../assets/images/logo.png';
 
-const { Header, Sider } = Layout;
+const { Sider } = Layout;
 
 class Nav extends Component {
     state = {
@@ -43,22 +43,16 @@ class Nav extends Component {
                                 <span>Today</span>
                             </Link>
                         </Menu.Item>
-                        <Menu.Item key="/projects">
-                            <Link className="nav-link" to="/projects">
-                                <Icon type="bars" />
-                                <span>Projects</span>
-                            </Link>
-                        </Menu.Item>
                         <Menu.Item key="/records">
                             <Link className="nav-link" to="/records">
                                 <Icon type="database" />
                                 <span>Records</span>
                             </Link>
                         </Menu.Item>
-                        <Menu.Item key="/log">
-                            <Link className="nav-link" to="/log">
-                                <Icon type="reconciliation" />
-                                <span>Log</span>
+                        <Menu.Item key="/projects">
+                            <Link className="nav-link" to="/projects">
+                                <Icon type="bars" />
+                                <span>Projects</span>
                             </Link>
                         </Menu.Item>
                         <Menu.Item key="/report-week">
@@ -69,16 +63,7 @@ class Nav extends Component {
                         </Menu.Item>
                     </Menu>
                 </Sider>
-                <Layout>
-                    <Header className="header">
-                        <Icon
-                            className="trigger"
-                            type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-                            onClick={this.toggle}
-                        />
-                    </Header>
-                    {children}
-                </Layout>
+                <Layout>{children}</Layout>
             </Layout>
         );
     }
