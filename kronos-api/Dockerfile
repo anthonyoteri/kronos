@@ -11,10 +11,12 @@ WORKDIR /app
 
 RUN apk add --no-cache \
     curl \
+    gcc \
+    libc-dev \
+    mariadb-dev \
     py3-gunicorn \
     python3 \
     python3-dev \
-    sqlite \
     --
 
 COPY requirements.txt .

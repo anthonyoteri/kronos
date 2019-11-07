@@ -71,7 +71,10 @@ class Today extends Component {
                         <Button
                             type="primary"
                             icon="form"
-                            disabled={records.filter(r => r.stopTime === null).length !== 0}
+                            disabled={
+                                records.filter(r => r.stopTime === null).length !== 0 ||
+                                projects.filter(p => !p.locked).length === 0
+                            }
                             onClick={() => {
                                 this.setState({ createDialogOpen: true });
                             }}

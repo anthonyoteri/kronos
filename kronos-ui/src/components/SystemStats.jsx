@@ -30,9 +30,11 @@ const SystemStats = ({ projects, records }) => {
                     <Statistic
                         title="Last Project"
                         value={
-                            projects
-                                .filter(p => p.lastUsed !== null)
-                                .sort((a, b) => (a.lastUsed > b.lastUsed ? -1 : 1))[0].name
+                            projects.filter(p => p.lastUsed).length > 0
+                                ? projects
+                                      .filter(p => p.lastUsed !== null)
+                                      .sort((a, b) => (a.lastUsed > b.lastUsed ? -1 : 1))[0].name
+                                : 'N/A'
                         }
                     />
                 </Col>

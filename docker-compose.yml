@@ -1,26 +1,58 @@
 version: "3"
 services:
+  db:
+    image: mariadb:latest
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: kronos
+      MYSQL_USER: kronos
+      MYSQL_PASSWORD: kronos
+    volumes:
+      - database:/var/lib/mysql
+    networks:
+      - database_network
+    restart: unless-stopped
+
   backend:
     build: ./kronos-api
     image: anthonyoteri/kronos-api:latest
+    depends_on:
+      - db
     ports:
       - "8000:8000"
+    environment:
+      MYSQL_DATABASE: kronos
+      MYSQL_USER: kronos
+      MYSQL_PASSWORD: kronos
     volumes:
       - static-content:/app/static
       - config:/config
+    networks:
+      - database_network
+      - public_network
+    restart: unless-stopped
 
   web:
     build: ./kronos-ui
     image: anthonyoteri/kronos-ui:latest
     ports:
-      - "80:80"
+      - "8282:80"
     environment:
       - NODE_ENV=production
     depends_on:
       - backend
     volumes:
       - static-content:/usr/share/nginx/html/static
-
+    networks:
+      - public_network
+    restart: unless-stopped
 volumes:
+  database:
   static-content:
   config:
+
+networks:
+  database_network:
+    driver: bridge
+  public_network:
+    driver: bridge
