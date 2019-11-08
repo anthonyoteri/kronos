@@ -36,8 +36,6 @@ class RecordForm extends Component {
             stopTime: stopTime ? moment(stopTime.valueOf()).toISOString() : null,
         };
 
-        console.log('Data is ', data);
-
         onOk(data);
     };
 
@@ -75,7 +73,7 @@ class RecordForm extends Component {
     render() {
         const { visible, title, projects, onCancel } = this.props;
         const { project, startTime, stopTime } = this.state;
-        const timeFormat = 'YYYY-MM-DD HH:mm:ss';
+        const timeFormat = 'ddd MMM Do, Y h:mm A';
 
         const filteredProjects = [...projects].filter(p => !p.locked);
 
