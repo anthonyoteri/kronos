@@ -36,8 +36,6 @@ class RecordForm extends Component {
             stopTime: stopTime ? moment(stopTime.valueOf()).toISOString() : null,
         };
 
-        console.log('Data is ', data);
-
         onOk(data);
     };
 

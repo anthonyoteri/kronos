@@ -3,21 +3,23 @@ import moment from 'moment';
 
 import { Col, Row, Statistic } from 'antd';
 
-const SystemStats = ({ projects, records }) => {
+const SystemStats = ({ projects, records, now }) => {
     const activeProjects = projects.filter(p => !p.locked);
 
     const recordsMonth = records.filter(
         r =>
-            moment(r.startTime).isAfter(moment().startOf('month')) &&
-            moment(r.startTime).isBefore(moment().endOf('month'))
+            moment(r.startTime).isAfter(now.clone().startOf('month')) &&
+            moment(r.startTime).isBefore(now.clone().endOf('month'))
     );
     const recordsWeek = recordsMonth.filter(
         r =>
-            moment(r.startTime).isAfter(moment().startOf('week')) &&
-            moment(r.startTime).isBefore(moment().endOf('week'))
+            moment(r.startTime).isAfter(now.clone().startOf('week')) &&
+            moment(r.startTime).isBefore(now.clone().endOf('week'))
     );
     const recordsToday = recordsWeek.filter(
-        r => moment(r.startTime).isAfter(moment().startOf('day')) && moment(r.startTime).isBefore(moment().endOf('day'))
+        r =>
+            moment(r.startTime).isAfter(now.clone().startOf('day')) &&
+            moment(r.startTime).isBefore(now.clone().endOf('day'))
     );
 
     return (
@@ -33,7 +35,8 @@ const SystemStats = ({ projects, records }) => {
                             projects.filter(p => p.lastUsed).length > 0
                                 ? projects
                                       .filter(p => p.lastUsed !== null)
-                                      .sort((a, b) => (a.lastUsed > b.lastUsed ? -1 : 1))[0].name
+                                      .sort((a, b) => (moment(a.lastUsed).isBefore(moment(b.lastUsed)) ? 1 : -1))[0]
+                                      .name
                                 : 'N/A'
                         }
                     />

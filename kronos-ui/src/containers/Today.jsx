@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { Button, Card, Col, Icon, Row } from 'antd';
+import { Button, Card, Col, Row } from 'antd';
 import moment from 'moment';
 
 import RecordTable from '../components/RecordTable';
@@ -17,19 +17,15 @@ class Today extends Component {
         createDialogOpen: false,
         editDialogOpen: false,
         editDialogData: null,
+        now: moment(),
     };
 
     componentDidMount = () => {
-        // TODO: Figure out how to manage the edit modal
-        //this.interval = setInterval(() => this.tick(), 1000);
+        this.interval = setInterval(() => this.setState({ now: moment() }), 1000);
     };
 
     componentWillUnmount = () => {
-        //clearInterval(this.interval);
-    };
-
-    tick = () => {
-        this.setState({}); // TODO: There has to be a better way!
+        clearInterval(this.interval);
     };
 
     handleStop = record => {
@@ -60,8 +56,12 @@ class Today extends Component {
 
     render() {
         const { projects, records } = this.props;
+        const { now } = this.state;
+
         const recordsForToday = records.filter(
-            r => r.startTime > moment().startOf('day') && r.startTime < moment().endOf('day')
+            r =>
+                moment(r.startTime).isAfter(now.clone().startOf('day')) &&
+                moment(r.startTime).isBefore(now.clone().endOf('day'))
         );
 
         return (
@@ -83,12 +83,17 @@ class Today extends Component {
                         </Button>
                     </Row>
                     <Row style={{ paddingBottom: 8 }}>
-                        <ActivityTimeline records={recordsForToday} projects={projects} onStop={this.handleStop} />
+                        <ActivityTimeline
+                            records={recordsForToday}
+                            projects={projects}
+                            onStop={this.handleStop}
+                            now={now}
+                        />
                     </Row>
                 </Col>
                 <Col style={{ paddingBottom: 8 }} span={18}>
                     <Row style={{ paddingBottom: 8 }}>
-                        <ActiveStats projects={projects} records={records} />
+                        <ActiveStats projects={projects} records={records} now={now} />
                     </Row>
                     <Row style={{ paddingBottom: 8 }}>
                         <RecordTable
@@ -98,10 +103,11 @@ class Today extends Component {
                                 this.setState({ editDialogData: record, editDialogOpen: true });
                             }}
                             onDelete={this.handleDeleteRecord}
+                            now={now}
                         />
                     </Row>
                     <Row style={{ paddingBottom: 8 }}>
-                        <SystemStats projects={projects} records={records} />
+                        <SystemStats projects={projects} records={records} now={now} />
                     </Row>
                 </Col>
                 <RecordForm

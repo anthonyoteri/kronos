@@ -53,7 +53,7 @@ const ProjectTable = ({ projects, onEdit, onDelete }) => {
             ),
         },
     ];
-    return <Table columns={columns} dataSource={projects} rowKey="id" />;
+    return <Table columns={columns} dataSource={projects} rowKey="slug" />;
 };
 
 export default ProjectTable;

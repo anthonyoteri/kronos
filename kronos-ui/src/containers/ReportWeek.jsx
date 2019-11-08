@@ -13,28 +13,28 @@ import RecordForm from '../components/RecordForm';
 
 class ReportWeek extends Component {
     state = {
-        startDate: moment().startOf('week'),
-        endDate: moment().endOf('week'),
         editDialogOpen: false,
         editDialogData: null,
+        startDate: moment().startOf('week'),
+        now: moment(),
     };
 
     componentDidMount() {
-        const { currentDate } = moment('2019-10-31');
-        this.setState({
-            startDate: moment(currentDate).startOf('week'),
-            endDate: moment(currentDate).endOf('week'),
-        });
+        this.interval = setInterval(() => this.setState({ now: moment() }), 1000);
     }
 
+    componentWillUnmount = () => {
+        clearInterval(this.interval);
+    };
+
     handlePreviousWeek = () => {
-        const { startDate, endDate } = this.state;
-        this.setState({ startDate: startDate.add(-7, 'days'), endDate: endDate.add(-7, 'days') });
+        const { startDate } = this.state;
+        this.setState({ startDate: startDate.add(-7, 'days') });
     };
 
     handleNextWeek = () => {
-        const { startDate, endDate } = this.state;
-        this.setState({ startDate: startDate.add(7, 'days'), endDate: endDate.add(7, 'days') });
+        const { startDate } = this.state;
+        this.setState({ startDate: startDate.add(7, 'days') });
     };
 
     handleEditRecord = record => {
@@ -51,13 +51,16 @@ class ReportWeek extends Component {
 
     render() {
         const { projects, records } = this.props;
-        const { startDate, endDate } = this.state;
+        const { startDate, now } = this.state;
+        const endDate = startDate.clone().add(1, 'week');
 
         const days = daysInRange(startDate, endDate);
         const filteredRecords = days.map(d => filterStartTime(records, d));
         const joinedRecords = filteredRecords.map(r => joinProject(projects, r));
-        const aggregatedRecords = joinedRecords.map(r => aggregateDurations(r));
-        const flatSortedRecords = filteredRecords.flat().sort((a, b) => (a.startTime < b.startTime ? 1 : -1));
+        const aggregatedRecords = joinedRecords.map(r => aggregateDurations(r, now));
+        const flatSortedRecords = filteredRecords
+            .flat()
+            .sort((a, b) => (moment(a.startTime).isBefore(moment(b.startTime)) ? 1 : -1));
 
         return (
             <Card>
@@ -78,7 +81,7 @@ class ReportWeek extends Component {
                 </Row>
                 <Row>
                     <Col style={{ paddingBottom: 8 }} span={6}>
-                        <ActivityTimeline projects={projects} records={flatSortedRecords} />
+                        <ActivityTimeline projects={projects} records={flatSortedRecords} now={now} />
                     </Col>
                     <Col style={{ paddingBottom: 8 }} span={18}>
                         <RecordTable
@@ -88,6 +91,7 @@ class ReportWeek extends Component {
                                 this.setState({ editDialogData: record, editDialogOpen: true });
                             }}
                             onDelete={this.handleDeleteRecord}
+                            now={now}
                         />
                     </Col>
                 </Row>
@@ -121,8 +125,12 @@ const daysInRange = (startDate, endDate) => {
 };
 
 const filterStartTime = (records, targetDate) => {
-    const startOfDay = moment(targetDate).startOf('day');
-    const endOfDay = moment(targetDate).endOf('day');
+    const startOfDay = moment(targetDate)
+        .clone()
+        .startOf('day');
+    const endOfDay = moment(targetDate)
+        .clone()
+        .endOf('day');
 
     const data = records.filter(r => moment(r.startTime).isAfter(startOfDay) && moment(r.startTime).isBefore(endOfDay));
     return data;
@@ -132,10 +140,10 @@ const joinProject = (projects, records) => {
     return records.map(r => ({ ...r, project: projects.find(p => p.slug === r.project) }));
 };
 
-const aggregateDurations = records => {
+const aggregateDurations = (records, now) => {
     return records.reduce((agg, current) => {
         const o = { ...agg };
-        const duration = moment(current.stopTime ? current.stopTime : undefined).diff(moment(current.startTime));
+        const duration = moment(current.stopTime ? current.stopTime : now).diff(moment(current.startTime));
 
         if (o[current.project.name]) {
             o[current.project.name] += duration;

@@ -3,7 +3,7 @@ import moment from 'moment';
 
 import { Button, Icon, Timeline } from 'antd';
 
-const ActivityTimeline = ({ records, projects, onStop }) => {
+const ActivityTimeline = ({ records, projects, onStop, now }) => {
     const calendarFormat = {
         lastWeek: 'dddd MMM Do [at] h:mm A',
         sameElse: 'dddd MMM Do [at] h:mm A',
@@ -24,13 +24,7 @@ const ActivityTimeline = ({ records, projects, onStop }) => {
                     </p>
                     <p>
                         {moment(r.startTime).calendar(null, calendarFormat)} for{' '}
-                        {moment
-                            .duration(
-                                r.stopTime
-                                    ? moment(r.stopTime).diff(moment(r.startTime))
-                                    : moment().diff(moment(r.startTime))
-                            )
-                            .humanize()}
+                        {moment.duration((r.stopTime ? moment(r.stopTime) : now).diff(moment(r.startTime))).humanize()}
                     </p>
                 </Timeline.Item>
             ))}

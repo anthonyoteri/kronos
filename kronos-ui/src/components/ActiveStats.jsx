@@ -3,15 +3,16 @@ import moment from 'moment';
 
 import { Col, Row, Statistic } from 'antd';
 
-const RecordStats = ({ projects, records }) => {
+const RecordStats = ({ projects, records, now }) => {
     const recordsToday = records.filter(
-        r => moment(r.startTime).isAfter(moment().startOf('day')) && moment(r.startTime).isBefore(moment().endOf('day'))
+        r =>
+            moment(r.startTime).isAfter(now.clone().startOf('day')) &&
+            moment(r.startTime).isBefore(now.clone().endOf('day'))
     );
     const activeRecord = records.filter(r => r.stopTime === null)[0];
 
     const durationToday = recordsToday.reduce(
-        (subt, r) =>
-            (subt += r.stopTime ? moment(r.stopTime).diff(moment(r.startTime)) : moment().diff(moment(r.startTime))),
+        (subt, r) => (subt += (r.stopTime ? moment(r.stopTime) : now).diff(moment(r.startTime))),
         0
     );
 
@@ -28,9 +29,7 @@ const RecordStats = ({ projects, records }) => {
                     <Statistic
                         title="Active time"
                         value={
-                            activeRecord
-                                ? moment.duration(moment().diff(moment(activeRecord.startTime))).humanize()
-                                : '--'
+                            activeRecord ? moment.duration(now.diff(moment(activeRecord.startTime))).humanize() : '--'
                         }
                     />
                 </Col>

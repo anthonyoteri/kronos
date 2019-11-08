@@ -4,7 +4,7 @@ import { Button, Popconfirm, Table } from 'antd';
 
 import moment from 'moment';
 
-const RecordTable = ({ header, records, projects, onEdit, onDelete }) => {
+const RecordTable = ({ now, records, projects, onEdit, onDelete }) => {
     const calendarFormat = {
         lastWeek: 'dddd MMM Do [at] h:mm A',
         sameElse: 'dddd MMM Do [at] h:mm A',
@@ -35,11 +35,7 @@ const RecordTable = ({ header, records, projects, onEdit, onDelete }) => {
             key: 'duration',
             render: (text, record) =>
                 moment
-                    .duration(
-                        record.stopTime
-                            ? moment(record.stopTime).diff(moment(record.startTime))
-                            : moment().diff(moment(record.startTime))
-                    )
+                    .duration(moment(record.stopTime ? record.stopTime : now).diff(moment(record.startTime)))
                     .humanize(),
         },
         {
