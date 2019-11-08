@@ -1,4 +1,4 @@
-import { FETCH_RECORDS_READY, REFRESH_RECORD_READY } from './types';
+import { FETCH_RECORDS_READY, REFRESH_RECORD_READY, DELETE_RECORD_READY } from './types';
 import moment from 'moment';
 
 const initialState = {
@@ -17,6 +17,9 @@ export const recordsReducer = (state = initialState, actions) => {
                     moment(a.startTime).isBefore(moment(b.startTime)) ? 1 : -1
                 ),
             };
+        case DELETE_RECORD_READY:
+            const list = [...state.list].filter(r => r.id !== actions.id);
+            return { ...state, list };
         default:
             return state;
     }
