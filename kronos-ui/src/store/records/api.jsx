@@ -4,6 +4,10 @@ export const createRecord = async data => {
     return axios.post('/api/records/', data);
 };
 
+export const getRecord = async id => {
+    return axios.get(`/api/records/${id}`);
+};
+
 export const listRecords = async () => {
     return axios.get('/api/records');
 };
@@ -18,6 +22,7 @@ export const deleteRecord = async id => {
 
 export default {
     createRecord,
+    getRecord,
     listRecords,
     updateRecord,
     deleteRecord,
