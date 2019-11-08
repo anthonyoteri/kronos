@@ -11,6 +11,6 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
 
 class RecordViewSet(viewsets.ModelViewSet):
-    queryset = Record.objects.all()
+    queryset = Record.objects.select_related('project').all()
     serializer_class = RecordSerializer
     
