@@ -1,7 +1,10 @@
 import axios from 'axios';
 
+export const getProject = async slug => {
+    return axios.get(`/api/projects/${slug}/`);
+};
 export const listProjects = async () => {
-    return axios.get('/api/projects');
+    return axios.get('/api/projects/');
 };
 
 export const deleteProject = async slug => {
@@ -17,6 +20,7 @@ export const updateProject = async (id, data) => {
 };
 
 export default {
+    getProject,
     listProjects,
     deleteProject,
     createProject,
