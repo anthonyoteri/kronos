@@ -5,7 +5,7 @@ from .serializers import ProjectSerializer, RecordSerializer
 
 
 class ProjectViewSet(viewsets.ModelViewSet):
-    queryset = Project.objects.all()
+    queryset = Project.objects.prefetch_related('record').all()
     serializer_class = ProjectSerializer
     lookup_field = "slug"
 
