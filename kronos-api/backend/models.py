@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, timezone
 from django.db import models
 
 class Project(models.Model):
-    slug = models.SlugField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique=True, db_index=True)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=255, blank=True)
     locked = models.BooleanField(default=False)
@@ -27,7 +27,7 @@ class Project(models.Model):
 
 class Record(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    start_time = models.DateTimeField()
+    start_time = models.DateTimeField(db_index=True)
     stop_time = models.DateTimeField(blank=True, null=True)
 
     class Meta:

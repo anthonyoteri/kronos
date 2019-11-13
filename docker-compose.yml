@@ -13,7 +13,7 @@ services:
       - database_network
     restart: unless-stopped
 
-  backend:
+  api:
     build: ./kronos-api
     image: anthonyoteri/kronos-api:latest
     depends_on:
@@ -43,7 +43,7 @@ services:
     environment:
       - NODE_ENV=production
     depends_on:
-      - backend
+      - api
     volumes:
       - static-content:/usr/share/nginx/html/static
     networks:
