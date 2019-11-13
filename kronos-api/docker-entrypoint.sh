@@ -9,5 +9,10 @@ python3 manage.py makemigrations
 python3 manage.py migrate
 python3 manage.py collectstatic --noinput
 
+NUM_CORES=$(cat /proc/cpuinfo | grep processor | wc -l)
+echo "Detected $NUM_CORES cores"
+workers=$(echo "$NUM_CORES*2" | bc -l)
+echo "Using $workers workers"
+
 echo Starting Gunicorn.
-exec gunicorn --bind 0.0.0.0:8000 --workers 8 --worker-class gthread kronos.wsgi "$@"
+exec gunicorn --bind 0.0.0.0:8000 --workers $workers --worker-class gthread kronos.wsgi "$@"
